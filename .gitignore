@@ -75,6 +75,7 @@ cmake-build-*/
 out/
 logs/
 .idea/
+**/target
 
 # mpeltonen/sbt-idea plugin
 **/.idea_modules/
