@@ -36,24 +36,9 @@ public class Hospital {
         patientsArraylist.add(patient);
     }
 
-    public void newDoctor(Doctor doctor, String specialty) throws WrongSpecialtyException {
-        switch (specialty.toLowerCase()) {
-            case "familphysician":
-                FamilyPhysician f = (FamilyPhysician) doctor;
-                doctorArraylist.add(f);
-                break;
-            case "gynecologist":
-                Gynecologist g = (Gynecologist) doctor;
-                doctorArraylist.add(g);
-                break;
-            case "pediatrician":
-                Pediatrician p = (Pediatrician) doctor;
-                doctorArraylist.add(p);
-                break;
-            default:
-                throw new WrongSpecialtyException();
-
-        }
+    public void newDoctor(Doctor doctor) throws WrongSpecialtyException {
+        Doctor d = new Doctor();
+        doctorArraylist.add(d);
     }
 
     public void newHospitalRoom(HospitalRoom r) {

@@ -6,6 +6,9 @@ import com.solvd.laba.exceptions.InvalidRoomNumberException;
 import com.solvd.laba.exceptions.NameIsEmptyException;
 import com.solvd.laba.exceptions.WrongSpecialtyException;
 import com.solvd.laba.person.Doctors.Doctor;
+import com.solvd.laba.person.Doctors.FamilyPhysician;
+import com.solvd.laba.person.Doctors.Gynecologist;
+import com.solvd.laba.person.Doctors.Pediatrician;
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;
 import com.solvd.laba.room.rooms.IntensiveCareRoom;
@@ -160,8 +163,23 @@ public class Runner {
 
     public static void addDoctor(String name, int age, String specialty, Hospital hospital) throws InvalidAgeException, NameIsEmptyException, WrongSpecialtyException {
         try {
-            Doctor d = new Doctor(name, age);
-            hospital.newDoctor(d, specialty);
+            switch (specialty.toLowerCase()) {
+                case "familyphysician":
+                    FamilyPhysician f = new FamilyPhysician(name,age);
+                    hospital.newDoctor(f);
+                    break;
+                case "gynecologist":
+                    Gynecologist g = new Gynecologist(name,age);
+                    hospital.newDoctor(g);
+                    ;
+                    break;
+                case "pediatrician":
+                    Pediatrician p = new Pediatrician(name,age);
+                    hospital.newDoctor(p);
+                    break;
+                default:
+                    throw new WrongSpecialtyException();
+            }
         } catch (InvalidAgeException | NameIsEmptyException e) {
             LOGGER.error("Caught exception " + e);
         }
