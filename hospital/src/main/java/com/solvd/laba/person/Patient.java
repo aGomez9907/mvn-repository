@@ -60,12 +60,10 @@ public class Patient extends Person {
 
     @Override
     public String toString() {
-        return "Patient{" +
-                "putInHospital=" + putInHospital +
-                ", symptoms='" + symptoms + '\'' +
-                ", weight=" + weight +
-                ", height=" + height +
-                ", isMale=" + isMale +
-                '}';
+        return "Patient" +"\n"+
+                "symptoms: " + symptoms  +"\n"+
+                "weight: " + weight +"\n"+
+                "height:" + height +"\n"+
+                "male:" + isMale ;
     }
 }

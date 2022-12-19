@@ -14,6 +14,8 @@ import com.solvd.laba.room.rooms.HospitalRoom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.print.Doc;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -67,18 +69,6 @@ public class Hospital {
         throw new PersonNotFoundException(); //added exception
     }
 
-//    public  void assignRoom(Patient patient) {
-//        for (PatientsRoom pr : RoomArraylist) {
-//            if(pr.getPatient1() == null){
-//                pr.setPatient1(patient);
-//                return;
-//            }else if(pr.getPatient2() == null){
-//                pr.setPatient2(patient);
-//                return;
-//            }else System.out.println("No room available");
-//        }
-//
-//    }
 
     public Doctor getDoctorPerSpecialty(String specialty) throws PersonNotFoundException {
         for (Doctor d : doctorArraylist) {
@@ -89,14 +79,10 @@ public class Hospital {
         throw new PersonNotFoundException();
     }
 
-    //NEED TO BE CHANGED
-    // STOP USING INDEX, INSTEAD USE PATIENT ITSELF
-//    public  void setAppointment(int indexOfPatient, int indexOfDoctor, String date) {
-//
-//        appointmentArrayList.add(new Appointment(LocalDate.parse(date), doctorArraylist.get(indexOfDoctor), patientsArraylist.get(indexOfPatient)));
-//
-//
-//    }
+
+    public  void setAppointment(Patient patient, Doctor doctor, LocalDate date) {
+        appointmentArrayList.add(new Appointment(date, doctor, patient));
+    }
 
     public LinkedList<Nurse> getNurseLinkedList() {
         return nurseLinkedList;

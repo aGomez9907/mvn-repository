@@ -26,6 +26,9 @@ public class Doctor extends Person implements IGetExam, IDiagnostic {
 
 
     //METHODS
+
+
+
     public void revision() {
         LOGGER.info("Doctor " + super.getName() + " is examining the patient.");
     }
@@ -84,5 +87,6 @@ public class Doctor extends Person implements IGetExam, IDiagnostic {
             LOGGER.info("We cannot get a diagnosis for those symptoms.");
         }
     }
+
 }
 
