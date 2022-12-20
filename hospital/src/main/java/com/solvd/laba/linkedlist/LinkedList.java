@@ -41,7 +41,7 @@ public class LinkedList<T> {
             length++;
         }
 
-        
+
         void addNode(int pos, T data) {
             if (pos > length + 1) {
                 LOGGER.info("Position not found in the linked list");
@@ -64,7 +64,7 @@ public class LinkedList<T> {
             prev.next.next = temp;
         }
 
-        
+
         void removeNode(T remove) {
             node<t> prev = new node<>(null);
             prev.next = head;
@@ -91,8 +91,7 @@ public class LinkedList<T> {
             }
             if (exists) {
                 length--;
-            }
-            else {
+            } else {
                 LOGGER.info("Not found in the linked list");
             }
         }
