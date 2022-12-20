@@ -1,4 +1,4 @@
-package com.solvd.laba.person.Doctors;
+package com.solvd.laba.person.doctors;
 
 import com.solvd.laba.Hospital;
 import com.solvd.laba.exceptions.InvalidAgeException;
@@ -9,15 +9,17 @@ import com.solvd.laba.room.AssignRoom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FamilyPhysician extends Doctor {
-    private static Logger LOGGER = LogManager.getLogger();
+public class Pediatrician extends Doctor {
+    private final static Logger LOGGER = LogManager.getLogger();
 
-    public FamilyPhysician() {
+
+    public Pediatrician() {
     }
 
-    public FamilyPhysician(String name, int age) throws InvalidAgeException, NameIsEmptyException {
+    public Pediatrician(String name, int age) throws InvalidAgeException, NameIsEmptyException {
         super(name, age);
     }
+
 
     public double measureHeight(Patient patient) {
         return patient.getHeight();
@@ -28,9 +30,10 @@ public class FamilyPhysician extends Doctor {
     }
 
 
-    @Override
     public void getDiagnostic(Patient p, Hospital hospital) {
-
+        if (p.getAge() >= 18) {
+            LOGGER.info("Not a kid, cannot be diagnosed.");
+        }
         revision();
 
         LOGGER.info("The diagnosis is: ");
@@ -50,11 +53,10 @@ public class FamilyPhysician extends Doctor {
             case "broken bone":
                 if (IGetExam.getExam()) {
                     LOGGER.info("Open fracture, need to stay in hospital.");
-                    AssignRoom.assignRoom(hospital, p, true);
+                    AssignRoom.assignRoom(hospital, p, false);
                     break;
                 } else LOGGER.info("Use a cast and get rest. Patient can go home");
-
-
+                break;
             default:
                 LOGGER.info("We cannot get a diagnosis for those symptoms.");
                 break;

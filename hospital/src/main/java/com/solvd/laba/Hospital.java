@@ -4,17 +4,13 @@ import com.solvd.laba.exceptions.InvalidAgeException;
 import com.solvd.laba.exceptions.NameIsEmptyException;
 import com.solvd.laba.exceptions.PersonNotFoundException;
 import com.solvd.laba.exceptions.WrongSpecialtyException;
-import com.solvd.laba.person.Doctors.Doctor;
-import com.solvd.laba.person.Doctors.FamilyPhysician;
-import com.solvd.laba.person.Doctors.Gynecologist;
-import com.solvd.laba.person.Doctors.Pediatrician;
+import com.solvd.laba.person.doctors.Doctor;
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;
 import com.solvd.laba.room.rooms.HospitalRoom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.print.Doc;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -62,7 +58,7 @@ public class Hospital {
 
     public Doctor getDoctor(String name) throws PersonNotFoundException {
         for (Doctor d : doctorArraylist) {
-            if (d.getName().equals(name)) {
+            if (d.getName().equalsIgnoreCase(name)) {
                 return d;
             }
         }

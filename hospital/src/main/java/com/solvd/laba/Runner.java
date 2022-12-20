@@ -2,10 +2,10 @@ package com.solvd.laba;
 
 
 import com.solvd.laba.exceptions.*;
-import com.solvd.laba.person.Doctors.Doctor;
-import com.solvd.laba.person.Doctors.FamilyPhysician;
-import com.solvd.laba.person.Doctors.Gynecologist;
-import com.solvd.laba.person.Doctors.Pediatrician;
+import com.solvd.laba.person.doctors.Doctor;
+import com.solvd.laba.person.doctors.FamilyPhysician;
+import com.solvd.laba.person.doctors.Gynecologist;
+import com.solvd.laba.person.doctors.Pediatrician;
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;
 import com.solvd.laba.room.rooms.IntensiveCareRoom;
@@ -61,7 +61,7 @@ public class Runner {
         //hospital.getRoomArraylist().add(new PatientsRoom(-1, hospital.getNurseLinkedList().get(0))); //InvalidRoomNumberException
 
 
-        //MENU STILL NOT FINISHED
+        //exception thrown in method hospital.getDoctor(String name). Cannot find solution yet.
 
 
         boolean i = true;
@@ -129,7 +129,7 @@ public class Runner {
                 "0.Show menu\n" +
                 "1.Create new patient \n" +
                 "2.Get diagnostic.\n" +
-                "3.Search appointments.\n" +
+                "3.Set new appointment.\n" +
                 "4.Add new doctor.\n" +
                 "5.Add new nurse.\n" +
                 "6.Print patient's info.\n" +

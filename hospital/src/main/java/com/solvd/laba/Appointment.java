@@ -1,6 +1,6 @@
 package com.solvd.laba;
 
-import com.solvd.laba.person.Doctors.Doctor;
+import com.solvd.laba.person.doctors.Doctor;
 import com.solvd.laba.person.Patient;
 
 import java.time.LocalDate;

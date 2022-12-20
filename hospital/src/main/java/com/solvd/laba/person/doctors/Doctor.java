@@ -1,4 +1,4 @@
-package com.solvd.laba.person.Doctors;
+package com.solvd.laba.person.doctors;
 
 import com.solvd.laba.Hospital;
 import com.solvd.laba.exceptions.InvalidAgeException;
