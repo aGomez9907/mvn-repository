@@ -1,9 +1,8 @@
-package com.solvd.laba.room.rooms;
+package com.solvd.laba.rooms;
 
 import com.solvd.laba.exceptions.InvalidRoomNumberException;
-import com.solvd.laba.interfaces.IPrepareRoom;
 
-public abstract class HospitalRoom implements IPrepareRoom {
+public abstract class HospitalRoom{
     private int numberOfBeds;
     private int floor;
     private int roomNumber;

@@ -2,18 +2,16 @@ package com.solvd.laba;
 
 
 import com.solvd.laba.exceptions.*;
-import com.solvd.laba.person.doctors.Doctor;
 import com.solvd.laba.person.doctors.FamilyPhysician;
 import com.solvd.laba.person.doctors.Gynecologist;
 import com.solvd.laba.person.doctors.Pediatrician;
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;
-import com.solvd.laba.room.rooms.IntensiveCareRoom;
-import com.solvd.laba.room.rooms.PatientsRoom;
+import com.solvd.laba.rooms.IntensiveCareRoom;
+import com.solvd.laba.rooms.PatientsRoom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDate;
 import java.util.Scanner;
 
 
@@ -45,6 +43,7 @@ public class Runner {
         addNurse("Da Silva", 28, hospital);
         addNurse("Perez", 36, hospital);
         addNurse("Gonzalez", 36, hospital);
+        addNurse("Gomez", 32, hospital);
 
 
         addPatientsRoom(1, hospital.getNurseLinkedList().get(0), hospital);
@@ -52,6 +51,8 @@ public class Runner {
         addPatientsRoom(3, hospital.getNurseLinkedList().get(2), hospital);
 
         addIntensiveCareRoom(4, hospital.getNurseLinkedList().get(3), hospital);
+
+        addSurgeryRoom(5, hospital.getNurseLinkedList().get(4), hospital);
 
 
         //EXCEPTIONS
@@ -61,7 +62,6 @@ public class Runner {
         //hospital.getRoomArraylist().add(new PatientsRoom(-1, hospital.getNurseLinkedList().get(0))); //InvalidRoomNumberException
 
 
-        //exception thrown in method hospital.getDoctor(String name). Cannot find solution yet.
 
 
         boolean i = true;
@@ -83,41 +83,38 @@ public class Runner {
                 case 2: //GET DIAGNOSTIC
                     LOGGER.info("Enter the name of the patient: ");
                     String patientName = scanner.next();
-                    LOGGER.info("Enter the name of the doctor: ");
-                    String doctorName = scanner.next();
-                    Doctor d = hospital.getDoctor(doctorName);
-                    d.getDiagnostic(hospital.getPatient(patientName), hospital);
+                    hospital.getDiagnostic(patientName);
                     break;
-                case 3: //SET APPOINTMENT
-                    LOGGER.info("Enter the name of the patient: ");
-                    String patientName3 = scanner.next();
-                    Patient p3 = hospital.getPatient(patientName3);
-                    LOGGER.info("Enter the name of the doctor: ");
-                    String doctorName1 = scanner.next();
-                    Doctor d1 = hospital.getDoctor(doctorName1);
-                    LOGGER.info("Enter the day for the appointment(dd): ");
-                    int day = scanner.nextInt();
-                    LOGGER.info("Enter the month for the appointment(mm): ");
-                    int month = scanner.nextInt();
-                    LOGGER.info("Enter the year for the appointment(yyyy): ");
-                    int year = scanner.nextInt();
-                    LocalDate date = LocalDate.of(year, month, day);
+/*//                case 3: //SET APPOINTMENT
+//                    LOGGER.info("Enter the name of the patient: ");
+//                    String patientName3 = scanner.next();
+//                    Patient p3 = hospital.getPatient(patientName3);
+//                    LOGGER.info("Enter the name of the doctor: ");
+//                    String doctorName1 = scanner.next();
+//                    Doctor d1 = hospital.getDoctor(doctorName1);
+//                    LOGGER.info("Enter the day for the appointment(dd): ");
+//                    int day = scanner.nextInt();
+//                    LOGGER.info("Enter the month for the appointment(mm): ");
+//                    int month = scanner.nextInt();
+//                    LOGGER.info("Enter the year for the appointment(yyyy): ");
+//                    int year = scanner.nextInt();
+//                    LocalDate date = LocalDate.of(year, month, day);
+//
+//                    hospital.setAppointment(p3, d1, date);
+//                    break;*/
 
-                    hospital.setAppointment(p3, d1, date);
-                    break;
-
-                case 4:
+                case 3:
                     addDoctor(hospital);
                     break;
-                case 5:
+                case 4:
                     addNurse(hospital);
                     break;
-                case 6: //print patient info
+                case 5: //print patient info
                     LOGGER.info("Enter the name of the patient: ");
                     String patientName2 = scanner.next();
                     LOGGER.info(hospital.getPatient(patientName2).toString());
                     break;
-                case 7:
+                case 6:
                     i = false;
             }
         }
@@ -129,11 +126,11 @@ public class Runner {
                 "0.Show menu\n" +
                 "1.Create new patient \n" +
                 "2.Get diagnostic.\n" +
-                "3.Set new appointment.\n" +
-                "4.Add new doctor.\n" +
-                "5.Add new nurse.\n" +
-                "6.Print patient's info.\n" +
-                "7.Quit.");
+                "3.Add new doctor.\n" +
+                "4.Add new nurse.\n" +
+                "5.Print patient's info.\n" +
+                "6.Quit.");
+
     }
 
     public static void addPatient(Hospital hospital) throws InvalidAgeException, NameIsEmptyException {
@@ -245,6 +242,16 @@ public class Runner {
         try {
             IntensiveCareRoom r = new IntensiveCareRoom(roomNumber, nurse);
             hospital.newHospitalRoom(r);
+        } catch (InvalidRoomNumberException e) {
+            LOGGER.error("Caught exception " + e);
+        }
+    }
+
+
+    public static void addSurgeryRoom(int roomNumber, Nurse nurse, Hospital hospital) throws InvalidRoomNumberException {
+        try {
+            IntensiveCareRoom sr = new IntensiveCareRoom(roomNumber, nurse);
+            hospital.newHospitalRoom(sr);
         } catch (InvalidRoomNumberException e) {
             LOGGER.error("Caught exception " + e);
         }

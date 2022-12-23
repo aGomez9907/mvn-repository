@@ -3,19 +3,22 @@ package com.solvd.laba.person.doctors;
 import com.solvd.laba.enums.Specialty;
 import com.solvd.laba.exceptions.InvalidAgeException;
 import com.solvd.laba.exceptions.NameIsEmptyException;
+import com.solvd.laba.interfaces.IGetExam;
 import com.solvd.laba.person.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FamilyPhysician extends Doctor {
+public class Traumatologist extends Doctor {
+
+
     private static final Logger LOGGER = LogManager.getLogger();
 
 
-    public FamilyPhysician() {
+    public Traumatologist() {
     }
 
-    public FamilyPhysician(String name, int age) throws InvalidAgeException, NameIsEmptyException {
-        super(name, age, Specialty.FAMILYPHISICIAN);
+    public Traumatologist(String name, int age) throws InvalidAgeException, NameIsEmptyException {
+        super(name, age, Specialty.TRAUMATOLOGIST);
 
     }
 
@@ -28,29 +31,27 @@ public class FamilyPhysician extends Doctor {
     }
 
 
-
     public boolean getDiagnostic(Patient p) {
 
         revision();
 
         LOGGER.info("The diagnosis is: ");
         switch (p.getSymptoms().toLowerCase()) {
-            case "fever":
-                if (measureTemperature() > 37) {
-                    LOGGER.info("Patient need to rest and ibuprofen every 8 hours.");
-                    return false;
-                } else if (measureTemperature() < 34) {
-                    LOGGER.info("Patient has hypothermia, need to warm up.");
+            case "broken bone":
+                if (IGetExam.getExam()) {
+                    LOGGER.info("Open fracture, need to stay in hospital and get surgery.");
                     return true;
-                } else LOGGER.info("Everything fine.");
+                } else LOGGER.info("Use a cast and get rest. Patient can go home");
                 return false;
-            case "examination":
-                LOGGER.info("The patient weights " + p.getWeight() + "Kg and is " + p.getHeight() + "cm tall.");
+            case "knee pain":
+                if (IGetExam.getExam()) {
+                    LOGGER.info("The knee needs surgery.");
+                    return true;
+                } else LOGGER.info("Take medicine and come back in a week. ");
                 return false;
+
+
         }
         return false;
     }
-
-
-
 }

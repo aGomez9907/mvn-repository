@@ -6,6 +6,6 @@ import com.solvd.laba.person.Patient;
 public interface IDiagnostic extends IGetExam {
 
 
-    void getDiagnostic(Patient patient, Hospital hospital);
+    boolean getDiagnostic(Patient patient);
 
 }

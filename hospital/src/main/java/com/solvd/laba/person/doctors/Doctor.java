@@ -1,6 +1,7 @@
 package com.solvd.laba.person.doctors;
 
 import com.solvd.laba.Hospital;
+import com.solvd.laba.enums.Specialty;
 import com.solvd.laba.exceptions.InvalidAgeException;
 import com.solvd.laba.exceptions.NameIsEmptyException;
 import com.solvd.laba.interfaces.IDiagnostic;
@@ -11,23 +12,27 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-public class Doctor extends Person implements IGetExam, IDiagnostic {
+public abstract class Doctor extends Person implements IGetExam, IDiagnostic {
 
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private Specialty specialty;
     //CONSTRUCTOR
     public Doctor() {
 
     }
 
-    public Doctor(String name, int age) throws InvalidAgeException, NameIsEmptyException {
+    public Doctor(String name, int age, Specialty specialty) throws InvalidAgeException, NameIsEmptyException {
         super(name, age);
+        this.specialty = specialty;
     }
 
 
     //METHODS
 
 
+    public Specialty getSpecialty() {
+        return specialty;
+    }
 
     public void revision() {
         LOGGER.info("Doctor " + super.getName() + " is examining the patient.");
@@ -64,29 +69,9 @@ public class Doctor extends Person implements IGetExam, IDiagnostic {
     }
 
     @Override
-    public void getDiagnostic(Patient p, Hospital hospital) {
-
-        revision();
-
-        LOGGER.info("The diagnosis is: ");
-        if ("fever".equals(p.getSymptoms().toLowerCase())) {
-            if (measureTemperature() > 37) {
-                LOGGER.info("Patient need to rest and ibuprofen every 8 hours.");
-            } else if (measureTemperature() < 34) {
-                LOGGER.info("Patient has hypothermia, need to warm up.");
-            } else LOGGER.info("Everything fine.");
-            //            case "headache":
-//
-//            case "vomit":
-//
-//
-//            case "broken bone":
-//
-//            case "decompensation":
-        } else {
-            LOGGER.info("We cannot get a diagnosis for those symptoms.");
-        }
+    public abstract boolean getDiagnostic(Patient p);
     }
 
-}
+
+
 

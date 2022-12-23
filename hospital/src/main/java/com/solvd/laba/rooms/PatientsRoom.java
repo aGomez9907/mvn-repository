@@ -1,13 +1,13 @@
-package com.solvd.laba.room.rooms;
+package com.solvd.laba.rooms;
 
 import com.solvd.laba.exceptions.InvalidRoomNumberException;
+
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 public class PatientsRoom extends HospitalRoom {
-    private static final Logger LOGGER = LogManager.getLogger();
+
     private Patient patient1;
     private Patient patient2;
     private Nurse nurse;
@@ -36,19 +36,7 @@ public class PatientsRoom extends HospitalRoom {
     }
 
 
-    public void makeBed() {
-        LOGGER.info("Nurse " + nurse.getName() + " prepared the bed for the patient.");
-    }
 
-    ;
-
-    public void disinfectRoom() {
-        LOGGER.info("Nurse " + nurse.getName() + " disinfected the room for the patient.");
-    }
-
-    public void prepareIVSolution() {
-        LOGGER.info("Nurse " + nurse.getName() + " prepared the IV solution for the patient.");
-    }
 
     public Nurse getNurse() {
         return nurse;
