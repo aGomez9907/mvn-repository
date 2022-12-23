@@ -1,6 +1,5 @@
 package com.solvd.laba.person.doctors;
 
-import com.solvd.laba.Hospital;
 import com.solvd.laba.enums.Specialty;
 import com.solvd.laba.exceptions.InvalidAgeException;
 import com.solvd.laba.exceptions.NameIsEmptyException;
@@ -16,6 +15,7 @@ public abstract class Doctor extends Person implements IGetExam, IDiagnostic {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private Specialty specialty;
+
     //CONSTRUCTOR
     public Doctor() {
 
@@ -70,7 +70,7 @@ public abstract class Doctor extends Person implements IGetExam, IDiagnostic {
 
     @Override
     public abstract boolean getDiagnostic(Patient p);
-    }
+}
 
 
 

@@ -1,5 +1,6 @@
 package com.solvd.laba.rooms;
 
+import com.solvd.laba.enums.RoomType;
 import com.solvd.laba.exceptions.InvalidRoomNumberException;
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;
@@ -11,7 +12,7 @@ public class IntensiveCareRoom extends HospitalRoom {
     private Nurse nurse;
 
     public IntensiveCareRoom(int roomNumber, Nurse nurse) throws InvalidRoomNumberException {
-        super(1, 3, roomNumber);
+        super(1, 3, roomNumber, RoomType.INTENSIVE_CARE_ROOM);
         this.nurse = nurse;
         this.patient = null;
     }

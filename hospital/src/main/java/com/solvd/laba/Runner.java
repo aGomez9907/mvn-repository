@@ -2,11 +2,11 @@ package com.solvd.laba;
 
 
 import com.solvd.laba.exceptions.*;
+import com.solvd.laba.person.Nurse;
+import com.solvd.laba.person.Patient;
 import com.solvd.laba.person.doctors.FamilyPhysician;
 import com.solvd.laba.person.doctors.Gynecologist;
 import com.solvd.laba.person.doctors.Pediatrician;
-import com.solvd.laba.person.Nurse;
-import com.solvd.laba.person.Patient;
 import com.solvd.laba.rooms.IntensiveCareRoom;
 import com.solvd.laba.rooms.PatientsRoom;
 import org.apache.logging.log4j.LogManager;
@@ -60,8 +60,6 @@ public class Runner {
         //addPatient("",29,false, "pregnant",90,172, hospital);//NameIsEmptyException
         //addPatient("pepa",-29,false, "pregnant",90,172, hospital);//InvalidAgeException
         //hospital.getRoomArraylist().add(new PatientsRoom(-1, hospital.getNurseLinkedList().get(0))); //InvalidRoomNumberException
-
-
 
 
         boolean i = true;

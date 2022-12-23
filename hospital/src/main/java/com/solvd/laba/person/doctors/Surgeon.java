@@ -8,7 +8,7 @@ import com.solvd.laba.person.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Surgeon extends Doctor{
+public class Surgeon extends Doctor {
 
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -21,11 +21,11 @@ public class Surgeon extends Doctor{
         return false;
     }
 
-    public boolean getSurgery(){
-        if(IGetExam.getExam()){
+    public boolean getSurgery() {
+        if (IGetExam.getExam()) {
             LOGGER.info("Surgery was successful");
             return true;
-        }else {
+        } else {
             LOGGER.info("Surgery was unsuccessful. Patient died.");
             return false;
         }

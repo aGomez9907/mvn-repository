@@ -11,7 +11,7 @@ import java.lang.reflect.Modifier;
 
 public class Reflection {
 
-    private static Logger LOGGER = LogManager.getLogger(Reflection.class);
+    private static final Logger LOGGER = LogManager.getLogger(Reflection.class);
 
     public static void main(String[] args) {
         try {

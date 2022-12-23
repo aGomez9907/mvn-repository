@@ -28,7 +28,6 @@ public class FamilyPhysician extends Doctor {
     }
 
 
-
     public boolean getDiagnostic(Patient p) {
 
         revision();
@@ -50,7 +49,6 @@ public class FamilyPhysician extends Doctor {
         }
         return false;
     }
-
 
 
 }

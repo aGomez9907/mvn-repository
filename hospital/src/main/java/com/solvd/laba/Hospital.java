@@ -1,5 +1,6 @@
 package com.solvd.laba;
 
+import com.solvd.laba.enums.RoomType;
 import com.solvd.laba.enums.Specialty;
 import com.solvd.laba.exceptions.InvalidAgeException;
 import com.solvd.laba.exceptions.NameIsEmptyException;
@@ -70,7 +71,6 @@ public class Hospital implements IAssignRoom {
 
     public Doctor getDoctorPerSpecialty(Specialty specialty) throws PersonNotFoundException {
         for (Doctor d : doctorArraylist) {
-
             if (d.getSpecialty().equals(specialty)) {
                 return d;
             }
@@ -131,7 +131,7 @@ public class Hospital implements IAssignRoom {
                 if (putInHospitalT) {
                     Surgeon s = (Surgeon) getDoctorPerSpecialty(Specialty.SURGEON);
                     assignRoom(patient, s);
-                    if(s.getSurgery()){
+                    if (s.getSurgery()) {
                         assignRoom(patient, true);
                     }
                 } else {
@@ -173,19 +173,18 @@ public class Hospital implements IAssignRoom {
     }
 
 
-
-    public void assignRoom(Patient patient, Surgeon surgeon){
+    public void assignRoom(Patient patient, Surgeon surgeon) {
         for (HospitalRoom r : roomArraylist) {
-            if (r.getClass().getSimpleName().equals("SurgeryRoom")){
+            if (r.getRoomType() == RoomType.SURGERY_ROOM) {
                 SurgeryRoom sr = (SurgeryRoom) r;
-                if(sr.getPatient() == null){
+                if (sr.getPatient() == null) {
                     sr.getNurse().disinfectRoom();
                     sr.getNurse().makeBed();
                     sr.getNurse().prepareIVSolution();
 
                     sr.setPatient(patient);
-                    LOGGER.info("Patient set in room N°" + sr.getRoomNumber()+" and is ready to get surgery with" +
-                            "doctor "+ surgeon.getName());
+                    LOGGER.info("Patient set in room N°" + sr.getRoomNumber() + " and is ready to get surgery with" +
+                            "doctor " + surgeon.getName());
                 }
             }
         }
@@ -196,7 +195,7 @@ public class Hospital implements IAssignRoom {
 
         for (HospitalRoom r : roomArraylist) {
             if (!isIntensive) {
-                if (r.getClass().getSimpleName().equals("PatientsRoom")) {
+                if (r.getRoomType() == RoomType.PATIENTS_ROOM) {
                     PatientsRoom pr = (PatientsRoom) r;
                     if (pr.getPatient1() == null) {
 
@@ -220,7 +219,7 @@ public class Hospital implements IAssignRoom {
                 }
 
             } else {
-                if (r.getClass().getSimpleName().equals("IntensiveCareRoom")) {
+                if (r.getRoomType() == RoomType.INTENSIVE_CARE_ROOM) {
                     IntensiveCareRoom ir = (IntensiveCareRoom) r;
                     if (ir.getPatient() == null) {
 

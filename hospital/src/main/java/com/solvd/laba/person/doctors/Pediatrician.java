@@ -11,7 +11,6 @@ public class Pediatrician extends Doctor {
     private final static Logger LOGGER = LogManager.getLogger();
 
 
-
     public Pediatrician() {
     }
 

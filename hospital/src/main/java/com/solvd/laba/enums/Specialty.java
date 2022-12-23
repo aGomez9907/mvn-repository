@@ -6,6 +6,6 @@ public enum Specialty {
     PEDIATRICIAN,
     TRAUMATOLOGIST,
     SURGEON
-    
+
 
 }
