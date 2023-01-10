@@ -1,7 +1,7 @@
 package com.solvd.laba.enums;
 
 public enum Specialty {
-    FAMILYPHISICIAN,
+    FAMILY_PHYSICIAN,
     GYNECOLOGIST,
     PEDIATRICIAN,
     TRAUMATOLOGIST,

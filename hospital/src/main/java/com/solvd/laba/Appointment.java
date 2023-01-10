@@ -20,14 +20,6 @@ public class Appointment {
         return patient;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
@@ -36,16 +28,19 @@ public class Appointment {
         return date;
     }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public Doctor getDoctor() {
         return doctor;
     }
 
     @Override
     public String toString() {
-        return "Appointment{" +
-                "date=" + date +
-                ", doctor=" + doctor +
-                ", patient=" + patient +
-                '}';
+        return "\nAppointment: \n" +
+                "date=" + date +"\n" +
+                "doctor=" + doctor.getName() +"\n" +
+                "patient=" + patient.getName();
     }
 }

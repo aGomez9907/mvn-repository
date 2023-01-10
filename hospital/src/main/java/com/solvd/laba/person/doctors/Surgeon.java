@@ -12,7 +12,7 @@ public class Surgeon extends Doctor {
 
     public static final Logger LOGGER = LogManager.getLogger();
 
-    public Surgeon(String name, int age, Specialty specialty) throws InvalidAgeException, NameIsEmptyException {
+    public Surgeon(String name, int age) throws InvalidAgeException, NameIsEmptyException {
         super(name, age, Specialty.SURGEON);
     }
 

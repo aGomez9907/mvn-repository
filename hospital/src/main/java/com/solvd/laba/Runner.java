@@ -4,15 +4,22 @@ package com.solvd.laba;
 import com.solvd.laba.exceptions.*;
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;
-import com.solvd.laba.person.doctors.FamilyPhysician;
-import com.solvd.laba.person.doctors.Gynecologist;
-import com.solvd.laba.person.doctors.Pediatrician;
+import com.solvd.laba.person.Person;
+import com.solvd.laba.person.doctors.*;
+import com.solvd.laba.rooms.HospitalRoom;
 import com.solvd.laba.rooms.IntensiveCareRoom;
 import com.solvd.laba.rooms.PatientsRoom;
+import com.solvd.laba.rooms.SurgeryRoom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 public class Runner {
@@ -23,7 +30,7 @@ public class Runner {
     public static void main(String[] args) throws InvalidRoomNumberException, InvalidAgeException, NameIsEmptyException, WrongSpecialtyException, PersonNotFoundException {
 
 
-        //INITIALIZATION OF THE PEOPLE AND ROOMS
+        //INITIALIZATION OF THE HOSPITAL, PEOPLE AND ROOMS
 
 
         Hospital hospital = new Hospital();
@@ -32,12 +39,14 @@ public class Runner {
         addPatient("alejo", 23, true, "fever", 83, 182, hospital);
         addPatient("robert", 29, true, "broken bone", 90, 172, hospital);
         addPatient("juana", 15, false, "examination", 50, 117, hospital);
-        addPatient("pepa", 29, false, "pregnant", 90, 172, hospital);
+        addPatient("pepa", 29, false, "pelvic exam", 90, 172, hospital);
 
 
         addDoctor("Smith", 30, "Family Physician", hospital);
         addDoctor("James", 39, "Pediatrician", hospital);
         addDoctor("Jones", 32, "Gynecologist", hospital);
+        addDoctor("Scott", 47, "Surgeon", hospital);
+        addDoctor("Schrute", 47, "Traumatologist", hospital);
 
         addNurse("Ramirez", 21, hospital);
         addNurse("Da Silva", 28, hospital);
@@ -54,14 +63,14 @@ public class Runner {
 
         addSurgeryRoom(5, hospital.getNurseLinkedList().get(4), hospital);
 
+        //Custom lambda
+        hospital.modifySymptoms("knee pain", symptoms -> hospital.getPatient("alejo").setSymptoms(symptoms));
 
-        //EXCEPTIONS
+        //lambda used as getter
+        Function<Nurse, Integer> getNurseAge = Person::getAge;
+        LOGGER.info("The age of nurse Ramirez is "+ getNurseAge.apply(hospital.getNurseLinkedList().get(0)));
 
-        //addPatient("",29,false, "pregnant",90,172, hospital);//NameIsEmptyException
-        //addPatient("pepa",-29,false, "pregnant",90,172, hospital);//InvalidAgeException
-        //hospital.getRoomArraylist().add(new PatientsRoom(-1, hospital.getNurseLinkedList().get(0))); //InvalidRoomNumberException
-
-
+        //OPTIONS MENU
         boolean i = true;
         while (i) {
             printMenu();
@@ -83,24 +92,6 @@ public class Runner {
                     String patientName = scanner.next();
                     hospital.getDiagnostic(patientName);
                     break;
-/*//                case 3: //SET APPOINTMENT
-//                    LOGGER.info("Enter the name of the patient: ");
-//                    String patientName3 = scanner.next();
-//                    Patient p3 = hospital.getPatient(patientName3);
-//                    LOGGER.info("Enter the name of the doctor: ");
-//                    String doctorName1 = scanner.next();
-//                    Doctor d1 = hospital.getDoctor(doctorName1);
-//                    LOGGER.info("Enter the day for the appointment(dd): ");
-//                    int day = scanner.nextInt();
-//                    LOGGER.info("Enter the month for the appointment(mm): ");
-//                    int month = scanner.nextInt();
-//                    LOGGER.info("Enter the year for the appointment(yyyy): ");
-//                    int year = scanner.nextInt();
-//                    LocalDate date = LocalDate.of(year, month, day);
-//
-//                    hospital.setAppointment(p3, d1, date);
-//                    break;*/
-
                 case 3:
                     addDoctor(hospital);
                     break;
@@ -112,7 +103,14 @@ public class Runner {
                     String patientName2 = scanner.next();
                     LOGGER.info(hospital.getPatient(patientName2).toString());
                     break;
-                case 6:
+                case 6: //lambda to print all today's appointments
+                    Function<ArrayList<Appointment>, List<Appointment>> printAppointmentsOfTheDay = (b) -> b.stream()
+                            .filter(appointment -> Objects.equals(appointment.getDate(), LocalDate.now())).collect(Collectors.toList());
+
+                    LOGGER.info("Today appointments are: " + printAppointmentsOfTheDay.apply(hospital.getAppointmentArrayList()).toString());
+                    break;
+
+                case 7:
                     i = false;
             }
         }
@@ -120,17 +118,11 @@ public class Runner {
     }
 
     static void printMenu() {
-        LOGGER.info("Menu:\n" +
-                "0.Show menu\n" +
-                "1.Create new patient \n" +
-                "2.Get diagnostic.\n" +
-                "3.Add new doctor.\n" +
-                "4.Add new nurse.\n" +
-                "5.Print patient's info.\n" +
-                "6.Quit.");
+        LOGGER.info("Menu:\n" + "0.Show menu\n" + "1.Create new patient \n" + "2.Get diagnostic.\n" + "3.Add new doctor.\n" + "4.Add new nurse.\n" + "5.Print patient's info.\n" + "6.Print today appointments.\n" + "7.Quit.");
 
     }
 
+    //used to add patient from menu
     public static void addPatient(Hospital hospital) throws InvalidAgeException, NameIsEmptyException {
         String name;
         int age;
@@ -155,7 +147,7 @@ public class Runner {
         addPatient(name, age, isMale, symptoms, weight, height, hospital);
     }
 
-
+    // used to add patient to arrayList of patient
     public static void addPatient(String name, int age, boolean isMale, String symptoms, int weight, int height, Hospital hospital) throws InvalidAgeException, NameIsEmptyException {
         try {
             Patient p = new Patient(name, age, isMale, symptoms, weight, height);
@@ -164,7 +156,7 @@ public class Runner {
             LOGGER.error("Caught exception " + e);
         }
     }
-
+    //used to add doctor from menu
     public static void addDoctor(Hospital hospital) throws InvalidAgeException, NameIsEmptyException, WrongSpecialtyException {
         String name;
         int age;
@@ -182,6 +174,7 @@ public class Runner {
         addDoctor(name, age, specialty, hospital);
     }
 
+    // used to add doctor to arrayList of doctor
     public static void addDoctor(String name, int age, String specialty, Hospital hospital) throws InvalidAgeException, NameIsEmptyException, WrongSpecialtyException {
         try {
             switch (specialty.toLowerCase()) {
@@ -198,6 +191,14 @@ public class Runner {
                     Pediatrician p = new Pediatrician(name, age);
                     hospital.newDoctor(p);
                     break;
+                case "surgeon":
+                    Surgeon s = new Surgeon(name, age);
+                    hospital.newDoctor(s);
+                    break;
+                case "traumatologist":
+                    Traumatologist t = new Traumatologist(name, age);
+                    hospital.newDoctor(t);
+                    break;
                 default:
                     throw new WrongSpecialtyException();
             }
@@ -206,6 +207,7 @@ public class Runner {
         }
     }
 
+    // used to add nurse from menu
     public static void addNurse(Hospital hospital) throws InvalidAgeException, NameIsEmptyException {
         String name;
         int age;
@@ -218,6 +220,7 @@ public class Runner {
         addNurse(name, age, hospital);
     }
 
+    // used to add nurse to linkedList of nurse
     public static void addNurse(String name, int age, Hospital hospital) throws InvalidAgeException, NameIsEmptyException {
         try {
             Nurse n = new Nurse(name, age);
@@ -229,7 +232,7 @@ public class Runner {
 
     public static void addPatientsRoom(int roomNumber, Nurse nurse, Hospital hospital) throws InvalidRoomNumberException {
         try {
-            PatientsRoom r = new PatientsRoom(roomNumber, nurse);
+            HospitalRoom r = new PatientsRoom(roomNumber, nurse);
             hospital.newHospitalRoom(r);
         } catch (InvalidRoomNumberException e) {
             LOGGER.error("Caught exception " + e);
@@ -238,7 +241,7 @@ public class Runner {
 
     public static void addIntensiveCareRoom(int roomNumber, Nurse nurse, Hospital hospital) throws InvalidRoomNumberException {
         try {
-            IntensiveCareRoom r = new IntensiveCareRoom(roomNumber, nurse);
+            HospitalRoom r = new IntensiveCareRoom(roomNumber, nurse);
             hospital.newHospitalRoom(r);
         } catch (InvalidRoomNumberException e) {
             LOGGER.error("Caught exception " + e);
@@ -248,10 +251,16 @@ public class Runner {
 
     public static void addSurgeryRoom(int roomNumber, Nurse nurse, Hospital hospital) throws InvalidRoomNumberException {
         try {
-            IntensiveCareRoom sr = new IntensiveCareRoom(roomNumber, nurse);
+            HospitalRoom sr = new SurgeryRoom(roomNumber, nurse);
             hospital.newHospitalRoom(sr);
         } catch (InvalidRoomNumberException e) {
             LOGGER.error("Caught exception " + e);
         }
     }
+
+    // to trigger some EXCEPTIONS
+
+    //addPatient("",29,false, "pregnant",90,172, hospital);//NameIsEmptyException
+    //addPatient("pepa",-29,false, "pregnant",90,172, hospital);//InvalidAgeException
+    //hospital.getRoomArraylist().add(new PatientsRoom(-1, hospital.getNurseLinkedList().get(0))); //InvalidRoomNumberException
 }

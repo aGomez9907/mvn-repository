@@ -1,9 +1,11 @@
 package com.solvd.laba.person.doctors;
 
+import com.solvd.laba.enums.Medicine;
 import com.solvd.laba.enums.Specialty;
 import com.solvd.laba.exceptions.InvalidAgeException;
 import com.solvd.laba.exceptions.NameIsEmptyException;
 import com.solvd.laba.interfaces.IGetExam;
+import com.solvd.laba.interfaces.IGivePrescription;
 import com.solvd.laba.person.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,14 +43,20 @@ public class Traumatologist extends Doctor {
                 if (IGetExam.getExam()) {
                     LOGGER.info("Open fracture, need to stay in hospital and get surgery.");
                     return true;
-                } else LOGGER.info("Use a cast and get rest. Patient can go home");
-                return false;
+                } else {
+                    LOGGER.info("Use a cast and get rest. Patient can go home");
+                    LOGGER.info("Prescription: " + IGivePrescription.getPrescription(Medicine.DICLOFENAC, 6));
+                    return false;
+                }
             case "knee pain":
                 if (IGetExam.getExam()) {
                     LOGGER.info("The knee needs surgery.");
                     return true;
-                } else LOGGER.info("Take medicine and come back in a week. ");
-                return false;
+                } else {
+                    LOGGER.info("Take medicine and come back on appointment date.");
+                    LOGGER.info("Prescription: " + IGivePrescription.getPrescription(Medicine.LIDOCAINE, 4));
+                    return false;
+                }
 
 
         }

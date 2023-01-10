@@ -1,6 +1,7 @@
 
 package com.solvd.laba.reflection;
 
+import com.solvd.laba.person.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,6 +15,43 @@ public class Reflection {
     private static final Logger LOGGER = LogManager.getLogger(Reflection.class);
 
     public static void main(String[] args) {
+
+
+        try {
+            Class<?> cls = Class.forName("com.solvd.laba.person.doctors.Pediatrician");
+            Object pediatrician = cls.getConstructor(String.class, int.class).newInstance("pepe", 30);
+
+
+            LOGGER.info(String.format(
+                    "Parent class of %s is %s", cls.getSimpleName(), cls.getSuperclass().getSimpleName()
+            ));
+
+            Class<?> p = Class.forName("com.solvd.laba.person.Patient");
+            Object patient = p.getConstructor(String.class, int.class, boolean.class, String.class, int.class, int.class)
+                    .newInstance("alejo", 12, true, "fever", 83, 182);
+
+
+//
+            LOGGER.info("Calling method measureWeight: ");
+            LOGGER.info("The patient weight is: " + cls.getDeclaredMethod("measureWeight", Patient.class)
+                    .invoke(pediatrician, patient));
+
+
+//          the one above has a warning on the object Patient. With the one below there is no warning. Don't know why
+
+//            LOGGER.info("The patient weight is: " + cls.getDeclaredMethod("measureWeight", Patient.class)
+//                    .invoke(pediatrician, new Patient("alejo", 12, true, "fever", 83, 182)));
+
+
+
+            LOGGER.info("*******************");
+
+
+        } catch (Throwable e) {
+            LOGGER.info(e);
+        }
+
+
         try {
             Class<?> cls = Class.forName("com.solvd.laba.Hospital");
             LOGGER.info("Methods of Hospital: ");

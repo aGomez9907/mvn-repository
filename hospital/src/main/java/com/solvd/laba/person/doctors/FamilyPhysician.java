@@ -1,8 +1,10 @@
 package com.solvd.laba.person.doctors;
 
+import com.solvd.laba.enums.Medicine;
 import com.solvd.laba.enums.Specialty;
 import com.solvd.laba.exceptions.InvalidAgeException;
 import com.solvd.laba.exceptions.NameIsEmptyException;
+import com.solvd.laba.interfaces.IGivePrescription;
 import com.solvd.laba.person.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +17,7 @@ public class FamilyPhysician extends Doctor {
     }
 
     public FamilyPhysician(String name, int age) throws InvalidAgeException, NameIsEmptyException {
-        super(name, age, Specialty.FAMILYPHISICIAN);
+        super(name, age, Specialty.FAMILY_PHYSICIAN);
 
     }
 
@@ -36,7 +38,8 @@ public class FamilyPhysician extends Doctor {
         switch (p.getSymptoms().toLowerCase()) {
             case "fever":
                 if (measureTemperature() > 37) {
-                    LOGGER.info("Patient need to rest and ibuprofen every 8 hours.");
+                    LOGGER.info("Patient need to rest take medicine.");
+                    LOGGER.info("Prescription: "+ IGivePrescription.getPrescription(Medicine.IBUPROFEN, 8));
                     return false;
                 } else if (measureTemperature() < 34) {
                     LOGGER.info("Patient has hypothermia, need to warm up.");

@@ -8,7 +8,6 @@ import java.util.Objects;
 public class Patient extends Person {
 
 
-    private boolean putInHospital;
     private String symptoms;
     private int weight;
     private int height;
@@ -24,17 +23,16 @@ public class Patient extends Person {
     }
 
 
-    public void setPutInHospital(boolean putInHospital) {
-        this.putInHospital = putInHospital;
-    }
-
-
     public boolean isMale() {
         return isMale;
     }
 
     public String getSymptoms() {
         return symptoms;
+    }
+
+    public void setSymptoms(String symptoms) {
+        this.symptoms = symptoms;
     }
 
     public int getWeight() {
@@ -50,17 +48,17 @@ public class Patient extends Person {
         if (this == o) return true;
         if (!(o instanceof Patient)) return false;
         Patient patient = (Patient) o;
-        return putInHospital == patient.putInHospital && weight == patient.weight && height == patient.height && isMale == patient.isMale && Objects.equals(symptoms, patient.symptoms);
+        return weight == patient.weight && height == patient.height && isMale == patient.isMale && Objects.equals(symptoms, patient.symptoms);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(putInHospital, symptoms, weight, height, isMale);
+        return Objects.hash(symptoms, weight, height, isMale);
     }
 
     @Override
     public String toString() {
-        return "Patient" + "\n" +
+        return "Patient: " + super.getName() + "\n" +
                 "symptoms: " + symptoms + "\n" +
                 "weight: " + weight + "\n" +
                 "height:" + height + "\n" +

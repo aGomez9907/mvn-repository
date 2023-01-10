@@ -5,8 +5,8 @@ import com.solvd.laba.enums.Specialty;
 import com.solvd.laba.exceptions.InvalidAgeException;
 import com.solvd.laba.exceptions.NameIsEmptyException;
 import com.solvd.laba.exceptions.PersonNotFoundException;
-import com.solvd.laba.exceptions.WrongSpecialtyException;
 import com.solvd.laba.interfaces.IAssignRoom;
+import com.solvd.laba.lambdas.ChangeSymptomsConsumer;
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;
 import com.solvd.laba.person.doctors.Doctor;
@@ -20,7 +20,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class Hospital implements IAssignRoom {
 
@@ -37,7 +39,7 @@ public class Hospital implements IAssignRoom {
         patientsArraylist.add(patient);
     }
 
-    public void newDoctor(Doctor doctor) throws WrongSpecialtyException {
+    public void newDoctor(Doctor doctor) {
         doctorArraylist.add(doctor);
     }
 
@@ -50,130 +52,15 @@ public class Hospital implements IAssignRoom {
         nurseLinkedList.add(nurse);
     }
 
-    public Patient getPatient(String name) throws PersonNotFoundException {
-        for (Patient p : patientsArraylist) {
-            if (p.getName().equals(name)) {
-                return p;
-            }
-        }
-        throw new PersonNotFoundException(); //added exception
+    public void modifySymptoms(String symptoms, ChangeSymptomsConsumer<String> modifier) throws PersonNotFoundException {
+        modifier.accept(symptoms);
+        LOGGER.info("The symptoms were changed.");
     }
 
-    public Doctor getDoctor(String name) throws PersonNotFoundException {
-        for (Doctor d : doctorArraylist) {
-            if (d.getName().equalsIgnoreCase(name)) {
-                return d;
-            }
-        }
-        throw new PersonNotFoundException(); //added exception
-    }
-
-
-    public Doctor getDoctorPerSpecialty(Specialty specialty) throws PersonNotFoundException {
-        for (Doctor d : doctorArraylist) {
-            if (d.getSpecialty().equals(specialty)) {
-                return d;
-            }
-        }
-        throw new PersonNotFoundException();
-    }
-
-    public void getDiagnostic(String patient) throws PersonNotFoundException {
-        getDiagnostic(getPatient(patient));
-    }
-
-    public void getDiagnostic(Patient patient) throws PersonNotFoundException {
-        LocalDate ld = LocalDate.now();
-
-
-        switch (patient.getSymptoms()) {
-            case "fever", "examination":
-                if (patient.getAge() >= 18) {
-                    Doctor fp = getDoctorPerSpecialty(Specialty.FAMILYPHISICIAN);
-                    boolean putInHospitalFP = fp.getDiagnostic(patient);
-                    if (putInHospitalFP) {
-                        assignRoom(patient, false);
-                    } else {
-                        Appointment appointment = new Appointment(ld.plusDays(7), fp, patient);
-                        setAppointment(appointment);   //need to update setAppointment to add time and
-                    }                                                           //to check if the appointment is taken.
-                } else {
-                    Doctor p = getDoctorPerSpecialty(Specialty.PEDIATRICIAN);
-                    boolean putInHospitalFP = p.getDiagnostic(patient);
-                    if (putInHospitalFP) {
-                        assignRoom(patient, false);
-                    } else {
-                        Appointment appointment = new Appointment(ld.plusDays(7), p, patient);
-                        setAppointment(appointment);
-                    }
-                }
-                break;
-            case "pelvic exam", "vomit":
-                Doctor g = getDoctorPerSpecialty(Specialty.GYNECOLOGIST);
-                boolean putInHospitalG = g.getDiagnostic(patient);
-                if (putInHospitalG) {
-                    assignRoom(patient, false);
-                } else {
-                    Appointment appointment = new Appointment(ld.plusDays(7), g, patient);
-                    setAppointment(appointment);
-                }
-                break;
-
-            case "pregnant":
-                Doctor g2 = getDoctorPerSpecialty(Specialty.GYNECOLOGIST);
-                assignRoom(patient, true);
-                g2.getDiagnostic(patient);
-                break;
-
-            case "broken bone", "knee pain":
-                Doctor t = getDoctorPerSpecialty(Specialty.TRAUMATOLOGIST);
-                boolean putInHospitalT = t.getDiagnostic(patient);
-                if (putInHospitalT) {
-                    Surgeon s = (Surgeon) getDoctorPerSpecialty(Specialty.SURGEON);
-                    assignRoom(patient, s);
-                    if (s.getSurgery()) {
-                        assignRoom(patient, true);
-                    }
-                } else {
-                    Appointment appointment = new Appointment(ld.plusDays(7), t, patient);
-                    setAppointment(appointment);
-                }
-                break;
-
-            default:
-                LOGGER.info("We cannot get a diagnosis for those symptoms.");
-                break;
-
-
-        }
-    }
-
-    public void setAppointment(Appointment appointment) {
-        appointmentArrayList.add(appointment);
-    }
-
-    public LinkedList<Nurse> getNurseLinkedList() {
-        return nurseLinkedList;
-    }
-
-    public ArrayList<HospitalRoom> getRoomArraylist() {
-        return roomArraylist;
-    }
-
-    public ArrayList<Appointment> getAppointmentArrayList() {
-        return appointmentArrayList;
-    }
-
-    public ArrayList<Doctor> getDoctorArraylist() {
-        return doctorArraylist;
-    }
-
-    public ArrayList<Patient> getPatientsArraylist() {
-        return patientsArraylist;
-    }
 
 
     public void assignRoom(Patient patient, Surgeon surgeon) {
+
         for (HospitalRoom r : roomArraylist) {
             if (r.getRoomType() == RoomType.SURGERY_ROOM) {
                 SurgeryRoom sr = (SurgeryRoom) r;
@@ -190,6 +77,7 @@ public class Hospital implements IAssignRoom {
         }
 
     }
+
 
     public void assignRoom(Patient patient, boolean isIntensive) {
 
@@ -238,6 +126,114 @@ public class Hospital implements IAssignRoom {
     }
 
 
+    public void setAppointment(Appointment appointment) {
+
+        int last = appointmentArrayList.size() - 1;
+        if (last < 0) {
+            appointmentArrayList.add(appointment);
+        } else {
+            appointmentArrayList = (ArrayList<Appointment>) appointmentArrayList.stream()
+                    .sorted(Comparator.comparing(Appointment::getDate))
+                    .collect(Collectors.toList());
+            appointment.setDate(appointmentArrayList.get(last).getDate().plusDays(1));
+            appointmentArrayList.add(appointment);
+        }
+        LOGGER.info(appointmentArrayList.toString());
+    }
+
+    public Patient getPatient(String name) throws PersonNotFoundException {
+        Patient p = patientsArraylist.stream()
+                .filter(patient -> name.equals(patient.getName()))
+                .findAny()
+                .orElse(null);
+        if (p != null) {
+            return p;
+        } else throw new PersonNotFoundException("Patient name not found.");
+    }
+
+    public Doctor getDoctorPerSpecialty(Specialty specialty) throws PersonNotFoundException {
+        Doctor doc = doctorArraylist.stream()
+                .filter(doctor -> specialty.equals(doctor.getSpecialty()))
+                .findAny()
+                .orElse(null);
+
+        if (doc != null) {
+            return doc;
+        } else throw new PersonNotFoundException("Specialty not found.");
+    }
+
+    public void getDiagnostic(String patient) throws PersonNotFoundException {
+        getDiagnostic(getPatient(patient));
+    }
+
+    public void getDiagnostic(Patient patient) throws PersonNotFoundException {
+        LocalDate ld = LocalDate.now();
+        Doctor doc = null;
+        boolean putInHospital = false;
+
+        switch (patient.getSymptoms()) {
+            case "fever", "examination":
+                if (patient.getAge() >= 18) {
+                    doc = getDoctorPerSpecialty(Specialty.FAMILY_PHYSICIAN);
+                } else {
+                    doc = getDoctorPerSpecialty(Specialty.PEDIATRICIAN);
+                }
+                break;
+            case "pelvic exam", "vomit":
+                doc = getDoctorPerSpecialty(Specialty.GYNECOLOGIST);
+                break;
+
+            case "pregnant":
+                doc = getDoctorPerSpecialty(Specialty.GYNECOLOGIST);
+                assignRoom(patient, true);
+                doc.getDiagnostic(patient);
+                return;
+
+            case "broken bone", "knee pain":
+                doc = getDoctorPerSpecialty(Specialty.TRAUMATOLOGIST);
+                putInHospital = doc.getDiagnostic(patient);
+                if (putInHospital) {
+                    Surgeon s = (Surgeon) getDoctorPerSpecialty(Specialty.SURGEON);
+                    assignRoom(patient, s);
+                    LOGGER.info("Surgery started.");
+
+                    if (s.getSurgery()) {
+                        assignRoom(patient, true);
+                    } else {
+                        patientsArraylist.remove(patient);
+                    }
+
+                    return;
+                }
+                break;
+
+            default:
+                LOGGER.info("We cannot get a diagnosis for those symptoms.");
+                return;
+
+
+        }
+
+        putInHospital = doc.getDiagnostic(patient);
+        if (putInHospital) {
+            assignRoom(patient, false);
+        } else {
+            LOGGER.info("Appointment set to " + ld.plusDays(7) + " with doctor " + doc.getName());
+            Appointment appointment = new Appointment(ld.plusDays(7), doc, patient);
+            setAppointment(appointment);
+        }
+
+
+    }
+
+
+    public LinkedList<Nurse> getNurseLinkedList() {
+        return nurseLinkedList;
+    }
+
+    public ArrayList<Appointment> getAppointmentArrayList() {
+        return appointmentArrayList;
+    }
 }
 
 

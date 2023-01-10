@@ -26,6 +26,10 @@ public class SurgeryRoom extends HospitalRoom {
         return patient;
     }
 
+    public RoomType getRoomType(){
+        return RoomType.SURGERY_ROOM;
+    }
+
     public Nurse getNurse() {
         return nurse;
     }
