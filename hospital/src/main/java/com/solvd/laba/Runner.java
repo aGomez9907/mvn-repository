@@ -68,7 +68,7 @@ public class Runner {
 
         //lambda used as getter
         Function<Nurse, Integer> getNurseAge = Person::getAge;
-        LOGGER.info("The age of nurse Ramirez is "+ getNurseAge.apply(hospital.getNurseLinkedList().get(0)));
+        LOGGER.info("The age of nurse Ramirez is " + getNurseAge.apply(hospital.getNurseLinkedList().get(0)));
 
         //OPTIONS MENU
         boolean i = true;
@@ -156,6 +156,7 @@ public class Runner {
             LOGGER.error("Caught exception " + e);
         }
     }
+
     //used to add doctor from menu
     public static void addDoctor(Hospital hospital) throws InvalidAgeException, NameIsEmptyException, WrongSpecialtyException {
         String name;

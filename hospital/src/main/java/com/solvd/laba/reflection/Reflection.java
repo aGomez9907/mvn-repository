@@ -43,7 +43,6 @@ public class Reflection {
 //                    .invoke(pediatrician, new Patient("alejo", 12, true, "fever", 83, 182)));
 
 
-
             LOGGER.info("*******************");
 
 

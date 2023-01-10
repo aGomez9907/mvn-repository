@@ -1,9 +1,9 @@
 package com.solvd.laba.enums;
 
 public enum Medicine {
-    IBUPROFEN("600mg",8),
-    LIDOCAINE("300mg",10),
-    DICLOFENAC("50mg",20);
+    IBUPROFEN("600mg", 8),
+    LIDOCAINE("300mg", 10),
+    DICLOFENAC("50mg", 20);
 
     private String dose;
     private int quantity;

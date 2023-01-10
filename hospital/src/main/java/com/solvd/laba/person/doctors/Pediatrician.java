@@ -42,7 +42,7 @@ public class Pediatrician extends Doctor {
             case "fever":
                 if (measureTemperature() > 37) {
                     LOGGER.info("Patient need to rest and take medicine.");
-                    LOGGER.info("Prescription: "+ IGivePrescription.getPrescription(Medicine.IBUPROFEN, 8));
+                    LOGGER.info("Prescription: " + IGivePrescription.getPrescription(Medicine.IBUPROFEN, 8));
                     return false;
                 } else if (measureTemperature() < 34) {
                     LOGGER.info("Patient has hypothermia, need to warm up.");

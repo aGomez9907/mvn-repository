@@ -58,7 +58,6 @@ public class Hospital implements IAssignRoom {
     }
 
 
-
     public void assignRoom(Patient patient, Surgeon surgeon) {
 
         for (HospitalRoom r : roomArraylist) {

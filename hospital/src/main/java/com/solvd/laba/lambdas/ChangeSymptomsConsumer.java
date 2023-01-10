@@ -4,5 +4,5 @@ import com.solvd.laba.exceptions.PersonNotFoundException;
 
 @FunctionalInterface
 public interface ChangeSymptomsConsumer<T> {
-        void accept(T t) throws PersonNotFoundException;
+    void accept(T t) throws PersonNotFoundException;
 }
