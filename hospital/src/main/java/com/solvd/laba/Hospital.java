@@ -7,6 +7,7 @@ import com.solvd.laba.exceptions.NameIsEmptyException;
 import com.solvd.laba.exceptions.PersonNotFoundException;
 import com.solvd.laba.interfaces.IAssignRoom;
 import com.solvd.laba.lambdas.ChangeSymptomsConsumer;
+import com.solvd.laba.linkedlist.GenericLinkedList;
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;
 import com.solvd.laba.person.doctors.Doctor;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Hospital implements IAssignRoom {
@@ -31,7 +33,7 @@ public class Hospital implements IAssignRoom {
     private ArrayList<Doctor> doctorArraylist = new ArrayList<>();
 
     private ArrayList<Patient> patientsArraylist = new ArrayList<>();
-    private LinkedList<Nurse> nurseLinkedList = new LinkedList<>();
+    private GenericLinkedList<Nurse> nurseLinkedList = new GenericLinkedList<>();
     private ArrayList<HospitalRoom> roomArraylist = new ArrayList<>();
 
 
@@ -71,10 +73,14 @@ public class Hospital implements IAssignRoom {
                     sr.setPatient(patient);
                     LOGGER.info("Patient set in room N°" + sr.getRoomNumber() + " and is ready to get surgery with" +
                             "doctor " + surgeon.getName());
+                    return;
+                }else{
+                    LOGGER.info("Currently there is no room available in surgery room N°"+ sr.getRoomNumber());
                 }
             }
         }
-
+        LOGGER.info("Currently there is no surgery room available. Please wait until one is free " +
+                "or create a new room.");
     }
 
 
@@ -102,7 +108,9 @@ public class Hospital implements IAssignRoom {
                         pr.setPatient2(patient);
                         LOGGER.info("Patient set in room N°" + pr.getRoomNumber());
                         return;
-                    } else LOGGER.info("No bed available in room N°" + pr.getRoomNumber());
+                    } else {
+                        LOGGER.info("No bed available in room N°" + pr.getRoomNumber());
+                        }
                 }
 
             } else {
@@ -117,10 +125,14 @@ public class Hospital implements IAssignRoom {
 
                         LOGGER.info("Patient set in room N°" + ir.getRoomNumber());
                         return;
-                    } else LOGGER.info("No bed available in room N°" + ir.getRoomNumber());
+                    } else {
+                        LOGGER.info("No bed available in room N°" + ir.getRoomNumber());
+                    }
                 }
             }
         }
+        LOGGER.info("Currently there is no surgery room available. Please wait until one is free " +
+                "or create a new room.");
 
     }
 
@@ -163,6 +175,12 @@ public class Hospital implements IAssignRoom {
 
     public void getDiagnostic(String patient) throws PersonNotFoundException {
         getDiagnostic(getPatient(patient));
+    }
+
+
+    public void getNurseAge(Nurse nurse, Function<Nurse, Integer> function) {
+        int age = function.apply(nurse);
+        LOGGER.info("The nurse "+ nurse.getName()+" is "+ age +" years old.");
     }
 
     public void getDiagnostic(Patient patient) throws PersonNotFoundException {
@@ -226,7 +244,7 @@ public class Hospital implements IAssignRoom {
     }
 
 
-    public LinkedList<Nurse> getNurseLinkedList() {
+    public GenericLinkedList<Nurse> getNurseLinkedList() {
         return nurseLinkedList;
     }
 

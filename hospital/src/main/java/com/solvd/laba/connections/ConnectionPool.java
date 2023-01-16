@@ -1,45 +1,61 @@
 package com.solvd.laba.connections;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Vector;
+
 
 public class ConnectionPool {
-    public static final int CONNECTIONS_MAX = 5;
+        private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
-    private static ConnectionPool instance;
-    private List<Connection> connectionPool;
-    private List<Connection> usedConnections = new ArrayList<>(CONNECTIONS_MAX);
+        protected int size;
+        protected Vector<Connection> connections;
 
-    private ConnectionPool() {
-        this.connectionPool = new ArrayList<>(CONNECTIONS_MAX);
-        for (int i = 0; i < CONNECTIONS_MAX; i++) {
-            this.connectionPool.add(new Connection());
+        public ConnectionPool(int size) {
+            this.size = size;
+            connections = new Vector<>(size) {
+            };
+        }
+
+        private void connect(Connection connection) {
+            connections.add(connection);
+        }
+
+        public void disconnect(Connection connection) {
+            connections.remove(connection);
+        }
+
+        public synchronized Connection getConnection() {
+
+            Connection connection;
+
+            if (connections.size() < size) {
+                connection = new Connection("Thread #" + (connections.size() + 1));
+                connect(connection);
+                return connection;
+
+            } else {
+                LOGGER.info("No free slots, connection added to queue");
+                int count = 20;
+                while (count-- > 0) {
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+                    if (connections.size() < size) {
+                        connection = new Connection("Thread #" + (connections.size() + 1));
+                        disconnect(connection);
+                        return connection;
+                    }
+                }
+                throw new RuntimeException("Error. No connections available.");
+
+            }
         }
     }
 
-    public static ConnectionPool getInstance() {
-        if (instance == null) {
-            instance = new ConnectionPool();
-        }
-        return instance;
-    }
 
-    public boolean hasFreeConnections() {
-        return !connectionPool.isEmpty();
-    }
-
-    public synchronized Connection connect() {
-        if (connectionPool.isEmpty() || usedConnections.size() > CONNECTIONS_MAX) {
-            throw new RuntimeException("No available connections.");
-        }
-
-        Connection connection = connectionPool.remove(connectionPool.size() - 1);
-        usedConnections.add(connection);
-        return connection;
-    }
-
-    public synchronized boolean disconnect(Connection connection) {
-        connectionPool.add(connection);
-        return usedConnections.remove(connection);
-    }
-}

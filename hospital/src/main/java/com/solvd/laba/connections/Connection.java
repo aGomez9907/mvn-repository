@@ -4,28 +4,25 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Connection {
+    protected final String name;
+    protected boolean isAvailable;
+    private static final Logger LOGGER = LogManager.getLogger(Connection.class);
 
 
-    private static Logger LOGGER = LogManager.getLogger(Connection.class);
-
-    public void pinging(String message) {
-        LOGGER.info("pinging " + message);
+    public Connection(String name) {
+        this.name = name;
+        LOGGER.info("Connection " + name + " was created");
     }
 
-    public void auth(String message) {
-        LOGGER.info("auth " + message);
+    void connect() {
+        LOGGER.info("Connecting " + name);
+        isAvailable = false;
     }
 
-    public void info(String message) {
-        LOGGER.info("info " + message);
-    }
-
-    public void executeQuery(String message) {
-        LOGGER.info("executeQuery " + message);
-    }
-
-    public void close(String message) {
-        LOGGER.info("close " + message);
+    void disconnect() {
+        LOGGER.info("Disconnecting " + name);
+        isAvailable = true;
     }
 }
+
 

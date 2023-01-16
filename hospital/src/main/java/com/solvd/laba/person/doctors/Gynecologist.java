@@ -10,8 +10,8 @@ import org.apache.logging.log4j.Logger;
 
 public class Gynecologist extends Doctor {
 
-    private static Logger LOGGER = LogManager.getLogger();
-    private String specialty = "Gynecologist";
+    private static final Logger LOGGER = LogManager.getLogger();
+    private final String specialty = "Gynecologist";
 
     public Gynecologist() {
     }

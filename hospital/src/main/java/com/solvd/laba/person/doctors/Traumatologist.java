@@ -24,15 +24,6 @@ public class Traumatologist extends Doctor {
 
     }
 
-    public double measureHeight(Patient patient) {
-        return patient.getHeight();
-    }
-
-    public double measureWeight(Patient patient) {
-        return patient.getWeight();
-    }
-
-
     public boolean getDiagnostic(Patient p) {
 
         revision();

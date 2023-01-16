@@ -20,16 +20,6 @@ public class Pediatrician extends Doctor {
         super(name, age, Specialty.PEDIATRICIAN);
     }
 
-
-    public double measureHeight(Patient patient) {
-        return patient.getHeight();
-    }
-
-    public double measureWeight(Patient patient) {
-        return patient.getWeight();
-    }
-
-
     public boolean getDiagnostic(Patient p) {
         if (p.getAge() >= 18) {
             LOGGER.info("Not a kid, cannot be diagnosed.");

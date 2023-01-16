@@ -1,6 +1,7 @@
 package com.solvd.laba;
 
 
+import com.solvd.laba.enums.Specialty;
 import com.solvd.laba.exceptions.*;
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;
@@ -63,12 +64,13 @@ public class Runner {
 
         addSurgeryRoom(5, hospital.getNurseLinkedList().get(4), hospital);
 
+
         //Custom lambda
         hospital.modifySymptoms("knee pain", symptoms -> hospital.getPatient("alejo").setSymptoms(symptoms));
 
         //lambda used as getter
-        Function<Nurse, Integer> getNurseAge = Person::getAge;
-        LOGGER.info("The age of nurse Ramirez is " + getNurseAge.apply(hospital.getNurseLinkedList().get(0)));
+        hospital.getNurseAge(hospital.getNurseLinkedList().get(0), Person::getAge);
+
 
         //OPTIONS MENU
         boolean i = true;
