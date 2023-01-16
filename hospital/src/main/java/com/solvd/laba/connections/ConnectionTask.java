@@ -3,13 +3,17 @@ package com.solvd.laba.connections;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class ConnectionTask {
     private static final int EXECUTE_QUERY_TIMEOUT = 2500;
     private static Logger LOGGER = LogManager.getLogger(ConnectionTask.class);
 
     private static ConnectionPool connectionPool = new ConnectionPool(5);
+
     public static void main(String[] args) {
 
         final int MAX_THREADS = 7;

@@ -1,7 +1,6 @@
 package com.solvd.laba;
 
 
-import com.solvd.laba.enums.Specialty;
 import com.solvd.laba.exceptions.*;
 import com.solvd.laba.person.Nurse;
 import com.solvd.laba.person.Patient;

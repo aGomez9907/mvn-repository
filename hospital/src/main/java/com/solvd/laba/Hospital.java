@@ -22,7 +22,6 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -74,8 +73,8 @@ public class Hospital implements IAssignRoom {
                     LOGGER.info("Patient set in room N°" + sr.getRoomNumber() + " and is ready to get surgery with" +
                             "doctor " + surgeon.getName());
                     return;
-                }else{
-                    LOGGER.info("Currently there is no room available in surgery room N°"+ sr.getRoomNumber());
+                } else {
+                    LOGGER.info("Currently there is no room available in surgery room N°" + sr.getRoomNumber());
                 }
             }
         }
@@ -110,7 +109,7 @@ public class Hospital implements IAssignRoom {
                         return;
                     } else {
                         LOGGER.info("No bed available in room N°" + pr.getRoomNumber());
-                        }
+                    }
                 }
 
             } else {
@@ -180,7 +179,7 @@ public class Hospital implements IAssignRoom {
 
     public void getNurseAge(Nurse nurse, Function<Nurse, Integer> function) {
         int age = function.apply(nurse);
-        LOGGER.info("The nurse "+ nurse.getName()+" is "+ age +" years old.");
+        LOGGER.info("The nurse " + nurse.getName() + " is " + age + " years old.");
     }
 
     public void getDiagnostic(Patient patient) throws PersonNotFoundException {
