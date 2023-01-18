@@ -14,11 +14,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -105,10 +102,9 @@ public class Runner {
                     LOGGER.info(hospital.getPatient(patientName2).toString());
                     break;
                 case 6: //lambda to print all today's appointments
-                    Function<ArrayList<Appointment>, List<Appointment>> printAppointmentsOfTheDay = (b) -> b.stream()
-                            .filter(appointment -> Objects.equals(appointment.getDate(), LocalDate.now())).collect(Collectors.toList());
-
-                    LOGGER.info("Today appointments are: " + printAppointmentsOfTheDay.apply(hospital.getAppointmentArrayList()).toString());
+                   LOGGER.info("Today appointments are: " + hospital.listAppointmentsOfToday((b) -> b.stream()
+                            .filter(appointment -> Objects.equals(appointment.getDate(), LocalDate.now())).collect(Collectors.toList()))
+                            .toString());
                     break;
 
                 case 7:

@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -135,7 +136,6 @@ public class Hospital implements IAssignRoom {
 
     }
 
-
     public void setAppointment(Appointment appointment) {
 
         int last = appointmentArrayList.size() - 1;
@@ -180,6 +180,10 @@ public class Hospital implements IAssignRoom {
     public void getNurseAge(Nurse nurse, Function<Nurse, Integer> function) {
         int age = function.apply(nurse);
         LOGGER.info("The nurse " + nurse.getName() + " is " + age + " years old.");
+    }
+
+    public List<Appointment> listAppointmentsOfToday(Function<ArrayList<Appointment>, List<Appointment>> function){
+        return function.apply(appointmentArrayList);
     }
 
     public void getDiagnostic(Patient patient) throws PersonNotFoundException {
